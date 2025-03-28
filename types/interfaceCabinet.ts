@@ -1,7 +1,7 @@
 export default interface Cabinet {
     id: number;
     rue: string;
-    numRue: number;
+    numRue: string;
     codePostal: string;
     ville: string;
 }

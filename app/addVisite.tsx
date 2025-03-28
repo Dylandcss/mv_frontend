@@ -37,25 +37,21 @@ export default function AddVisite() {
             return;
         }
 
-        const visite = {
-            medecin: selectedMedecin,
-            visiteur: selectedVisiteur,
-            dateVisite: dateVisite.toDateString,
-            heureArrivee: heureArrivee.toLocaleTimeString('fr'), 
-            tempsAttente: parseInt(tempsAttente, 10),
-            heureDepart: heureDepart.toLocaleTimeString('fr'),
-            avecRdv: avecRdv ? 1 : 0,
-        };
+        const formData = new FormData();
+            formData.append("idMedecin", selectedMedecin.id.toString());
+            formData.append("idVisiteur", selectedVisiteur.id.toString());
+            formData.append("dateVisite", dateVisite.toISOString().substring(0, 10));
+            formData.append("heureArrivee", heureArrivee.toLocaleTimeString('fr-FR', { hour12: false }));
+            formData.append("tempsAttente", tempsAttente);
+            formData.append("heureDepart", heureDepart.toLocaleTimeString('fr-FR', { hour12: false }));
+            formData.append("avecRdv", avecRdv ? "1" : "0");
 
-        console.log(visite);
+            console.log("Données envoyées :", Object.fromEntries(formData));
 
         try {
             const response = await fetch("https://s5-4352.nuage-peda.fr/MV/api/APIVisite.php", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(visite),
+                body: formData,
             });
 
             if (!response.ok) {
@@ -109,7 +105,11 @@ export default function AddVisite() {
             </Picker>
             
             <Text>Heure d'arrivée</Text>
-            <Button title={heureArrivee.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} onPress={() => setShowTimePickerArrivee(true)} />
+            <Button 
+    title={heureArrivee.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', hour12: false })} 
+    onPress={() => setShowTimePickerArrivee(true)} 
+/>
+
             {showTimePickerArrivee && (
                 <DateTimePicker 
                     value={heureArrivee}
@@ -132,7 +132,11 @@ export default function AddVisite() {
             />
             
             <Text>Heure de départ</Text>
-            <Button title={heureDepart.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} onPress={() => setShowTimePickerDepart(true)} />
+            <Button 
+    title={heureDepart.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', hour12: false })} 
+    onPress={() => setShowTimePickerDepart(true)} 
+/>
+
             {showTimePickerDepart && (
                 <DateTimePicker 
                     value={heureDepart}
