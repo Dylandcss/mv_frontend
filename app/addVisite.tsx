@@ -66,8 +66,6 @@ export default function AddVisite() {
 
     return (
         <View style={{ padding: 20 }}>
-            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Ajouter une visite</Text>
-            
             <Text style={{ marginTop: 10 }}>Date de la visite</Text>
             <Button title={dateVisite.toLocaleDateString()} onPress={() => setShowDatePicker(true)} />
             {showDatePicker && (
@@ -82,7 +80,7 @@ export default function AddVisite() {
                 />
             )}
 
-            <Text>Médecin</Text>
+            <Text style={{ marginTop: 10 }}>Médecin</Text>
             <Picker
                 selectedValue={selectedMedecin}
                 onValueChange={(itemValue) => setSelectedMedecin(itemValue)}
@@ -93,7 +91,7 @@ export default function AddVisite() {
                 ))}
             </Picker>
 
-            <Text>Visiteur</Text>
+            <Text style={{ marginTop: 10 }}>Visiteur</Text>
             <Picker
                 selectedValue={selectedVisiteur}
                 onValueChange={(itemValue) => setSelectedVisiteur(itemValue)}
@@ -104,7 +102,7 @@ export default function AddVisite() {
                 ))}
             </Picker>
             
-            <Text>Heure d'arrivée</Text>
+            <Text style={{ marginTop: 10 }}>Heure d'arrivée</Text>
             <Button 
     title={heureArrivee.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', hour12: false })} 
     onPress={() => setShowTimePickerArrivee(true)} 
@@ -123,15 +121,16 @@ export default function AddVisite() {
                 />
             )}
 
-            <Text>Temps d'attente (minutes)</Text>
+            <Text style={{ marginTop: 10 }}>Temps d'attente (minutes)</Text>
             <TextInput
+                placeholder="00"
                 keyboardType="numeric"
                 value={tempsAttente}
                 onChangeText={setTempsAttente}
                 style={{ borderBottomWidth: 1, marginBottom: 10 }}
             />
             
-            <Text>Heure de départ</Text>
+            <Text style={{ marginTop: 10 }}>Heure de départ</Text>
             <Button 
     title={heureDepart.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', hour12: false })} 
     onPress={() => setShowTimePickerDepart(true)} 
