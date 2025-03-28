@@ -15,7 +15,7 @@ const getVisites = async (): Promise<Visite[]> => {
 }
 
 
-export default function viewVisites(){
+export default function ViewVisites(){
 
     const Item = ({ dateVisite, medecin, visiteur, heureArrivee, tempsAttente, heureDepart, avecRdv }: Visite) => (
         <View style={styles.item}>
@@ -23,7 +23,7 @@ export default function viewVisites(){
             <Text style={styles.text}>{"Médecin : " + medecin.nom + " " + medecin.prenom}</Text>
             <Text style={styles.text}>{"Visiteur : " + visiteur.nom + " " + visiteur.prenom}</Text>
             <Text style={styles.textsmall}>{"Heure d'arrivée : " + heureArrivee}</Text>
-            <Text style={styles.textsmall}>{"Temps d'attente : " + tempsAttente}</Text>
+            <Text style={styles.textsmall}>{"Temps d'attente : " + tempsAttente + " minutes"}</Text>
             <Text style={styles.textsmall}>{"Heure de départ : " + heureDepart}</Text>
             <Text style={[styles.textpill, { backgroundColor: avecRdv ? "#32a852" : "#cc2b31" }]}>
                 {avecRdv ? "Avec RDV" : "Sans RDV"}
@@ -54,7 +54,7 @@ export default function viewVisites(){
                             medecin={item.medecin} 
                             visiteur={item.visiteur} 
                             heureArrivee={item.heureArrivee} 
-                            tempsAttente={item.tempsAttente + " minutes"} 
+                            tempsAttente={item.tempsAttente} 
                             heureDepart={item.heureDepart} 
                             avecRdv={item.avecRdv} 
                         />

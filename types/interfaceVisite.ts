@@ -6,7 +6,7 @@ export default interface Visite {
     medecin: Medecin;
     visiteur: Visiteur;
     heureArrivee: string;
-    tempsAttente: string;
+    tempsAttente: number;
     heureDepart: string;
-    avecRdv: boolean;
+    avecRdv: number;
 }
