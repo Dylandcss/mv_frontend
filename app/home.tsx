@@ -1,11 +1,12 @@
 import { Link } from "expo-router";
 import { Image, StyleSheet, View } from "react-native";
 
-export default function Index() {
+export default function Home() {
   return (
     <View style={styles.container}>
       <Image source={require('@/assets/images/mv.png')} />
-      <Link style={styles.link} href="/login">Se connecter</Link>
+      <Link style={styles.link} href="/viewVisites">Voir les visites</Link>
+      <Link style={styles.link} href="/addVisite">Ajouter une visite</Link>
     </View>
   );
 }

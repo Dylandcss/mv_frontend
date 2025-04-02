@@ -1,11 +1,21 @@
 import Visite from "@/types/interfaceVisite";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const getVisites = async (): Promise<Visite[]> => {
     try {
-        const response = await fetch('https://s5-4352.nuage-peda.fr/MV/api/APIVisite.php');
+        const userId = await AsyncStorage.getItem('userId');
+        const response = await fetch('https://s5-4352.nuage-peda.fr/MV/api/APIVisite.php?id=' + userId
+                , {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + await AsyncStorage.getItem('userToken'),
+                },
+            }
+        );
         const data = await response.json();
         return data;
     } catch (error) {
