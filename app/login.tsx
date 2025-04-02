@@ -8,7 +8,7 @@ export default function Login() {
     const navigation = useNavigation<StackNavigationProp<any>>();
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const [errorMessage, setErrorMessage] = useState<string>(""); // Etat pour le message d'erreur
+    const [errorMessage, setErrorMessage] = useState<string>("");
 
     function decodeJWT(token: string) {
         const base64Url = token.split('.')[1];
@@ -21,7 +21,7 @@ export default function Login() {
         try {
             await AsyncStorage.setItem('userToken', token);
         } catch (error) {
-            console.error('Erreur lors du stockage du token', error);
+            throw new Error("Erreur lors de la sauvegarde du token : " + error);
         }
     };
 
@@ -38,34 +38,28 @@ export default function Login() {
                 }),
             });
 
-            console.log("Statut de la réponse :", response.status);
             const responseText = await response.text();
-            console.log("Réponse du serveur :", responseText);
 
             if (!response.ok) {
                 throw new Error(`Erreur ${response.status} : ${responseText}`);
             }
 
             const data = JSON.parse(responseText);
-            console.log("Données reçues :", data);
 
             const token = data.token;
-            console.log("Token :", token);
 
             const payload = decodeJWT(token);
 
             await AsyncStorage.setItem('userId', payload['userId'].toString());
             await storeToken(token);
 
-            setErrorMessage(""); // Réinitialiser le message d'erreur en cas de succès
+            setErrorMessage("");
             navigation.navigate("home");
         }
         catch (error) {
             if (error instanceof Error) {
-                console.error("Erreur lors de la connexion :", error.message);
                 setErrorMessage("Identifiants incorrects, veuillez réessayer."); // Mettre à jour l'état d'erreur
             } else {
-                console.error("Erreur lors de la connexion :", error);
                 setErrorMessage("Une erreur inconnue est survenue, veuillez réessayer.");
             }
         }
@@ -76,11 +70,9 @@ export default function Login() {
             try {
                 const token = await AsyncStorage.getItem('userToken');
                 if (token) {
-                    console.log("Token trouvé, redirection vers l'écran 'home'");
                     navigation.navigate("home");
                 }
             } catch (error) {
-                console.error('Erreur lors de la vérification du token', error);
             }
         };
 
