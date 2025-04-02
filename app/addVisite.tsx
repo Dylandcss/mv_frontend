@@ -39,7 +39,6 @@ export default function AddVisite() {
 
                 setMedecins(medecinsData);
             } catch (err) {
-                console.error("Erreur lors de la récupération des données", err);
                 Alert.alert("Erreur", "Une erreur est survenue lors de la récupération des données.");
             } finally {
                 setLoading(false);
