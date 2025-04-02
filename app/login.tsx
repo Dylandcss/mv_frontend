@@ -8,11 +8,12 @@ export default function Login() {
     const navigation = useNavigation<StackNavigationProp<any>>();
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const [errorMessage, setErrorMessage] = useState<string>(""); // Etat pour le message d'erreur
 
     function decodeJWT(token: string) {
-        const base64Url = token.split('.')[1]; // Get the payload part (second part)
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/'); // Fix URL-safe Base64 characters
-        const jsonPayload = JSON.parse(atob(base64)); // Decode and parse the payload
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = JSON.parse(atob(base64));
         return jsonPayload;
     }
 
@@ -50,19 +51,22 @@ export default function Login() {
 
             const token = data.token;
             console.log("Token :", token);
-            
+
             const payload = decodeJWT(token);
-            
+
             await AsyncStorage.setItem('userId', payload['userId'].toString());
             await storeToken(token);
 
+            setErrorMessage(""); // Réinitialiser le message d'erreur en cas de succès
             navigation.navigate("home");
         }
         catch (error) {
             if (error instanceof Error) {
                 console.error("Erreur lors de la connexion :", error.message);
+                setErrorMessage("Identifiants incorrects, veuillez réessayer."); // Mettre à jour l'état d'erreur
             } else {
                 console.error("Erreur lors de la connexion :", error);
+                setErrorMessage("Une erreur inconnue est survenue, veuillez réessayer.");
             }
         }
     };
@@ -86,19 +90,29 @@ export default function Login() {
     return (
         <View style={styles.container}>
             <Text>E-mail :</Text>
-            <TextInput                 
+            <TextInput    
+                autoComplete='email'    
+                autoCapitalize='none'
+                textContentType="emailAddress"
+                autoCorrect={false}
+                autoFocus={true}     
                 placeholder="john.doe@example.com"
                 keyboardType="email-address"
                 value={email}
                 onChangeText={setEmail}
                 style={styles.textinput} />
             <Text>Mot de passe :</Text>
-            <TextInput                 
+            <TextInput       
+                autoComplete='password'
+                secureTextEntry={true}
+                textContentType="password"          
                 placeholder="*********"
-                keyboardType="visible-password"
                 value={password}
                 onChangeText={setPassword}
                 style={styles.textinput} />
+            {errorMessage ? (
+                <Text style={styles.errorText}>{errorMessage}</Text>
+            ) : null}
             <Button title="Se connecter" onPress={submitForm} />
         </View>
     )
@@ -109,11 +123,17 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        padding: 20,
     },
     textinput: {
         borderBottomWidth: 1,
         marginBottom: 10,
-        width: 200,
+        width: '100%',
         padding: 5,
+    },
+    errorText: {
+        color: 'red',
+        marginBottom: 10,
+        textAlign: 'center',
     }
 });
